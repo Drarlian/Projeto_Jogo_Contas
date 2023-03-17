@@ -12,11 +12,7 @@ def game(pontos: int) -> None:
     resposta: int = verifica_int('Digite a resposta da operação: ')
 
     if calc.checar_resultado(resposta):
-        print('Parabéns você acertou!')
         pontos += 1
-    else:
-        print('Resposta Errada :(')
-        print('Na próxima você vai conseguir!')
 
     print(f'Você tem {pontos} ponto(s).')
     print('-' * 60)

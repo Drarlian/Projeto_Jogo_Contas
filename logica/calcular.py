@@ -5,7 +5,9 @@ class Calcular:
         self.__operacoes: list = ['+', '-', '*']
         shuffle(self.__operacoes)
         self.__operacao: str = choice(self.__operacoes)
-        self.__formula: tuple = self.__gera_formula()
+        self.__valor1 = self.__gerar_valor()
+        self.__valor2 = self.__gerar_valor()
+        self.__resultado: int = self.__gerar_resultado()
 
     @property
     def dificuldade(self) -> int:
@@ -20,89 +22,64 @@ class Calcular:
         return self.__operacao
 
     @property
-    def formula(self) -> tuple:
-        return self.__formula
+    def valor1(self) -> int:
+        return self.__valor1
 
-    def __gera_formula(self) -> tuple:
+    @property
+    def valor2(self) -> int:
+        return self.__valor2
+
+    @property
+    def resultado(self) -> int:
+        return self.__resultado
+
+    def __gerar_valor(self) -> int:
         from random import randint
 
-        if self.__dificuldade == 1:
-            n1 = randint(1, 50)
-            n2 = randint(1, 50)
-
-            if self.__operacao == '+':
-                return n1, n2, '+'
-            elif self.__operacao == '-':
-                return n1, n2, '-'
+        if self.dificuldade == 1:
+            if self.operacao == '+' or self.operacao == '-':
+                return randint(1, 50)
             else:
-                n1 = randint(1, 10)
-                n2 = randint(1, 10)
-
-                return n1, n2, '*'
-
-        elif self.__dificuldade == 2:
-            n1 = randint(2, 100)
-            n2 = randint(2, 100)
-
-            if self.__operacao == '+':
-                return n1, n2, '+'
-            elif self.__operacao == '-':
-                return n1, n2, '-'
+                return randint(1, 10)
+        elif self.dificuldade == 2:
+            if self.operacao == '+' or self.operacao == '-':
+                return randint(1, 100)
             else:
-                n1 = randint(1, 15)
-                n2 = randint(1, 15)
-
-                return n1, n2, '*'
-        elif self.__dificuldade == 3:
-            n1 = randint(1, 200)
-            n2 = randint(1, 200)
-
-            if self.__operacao == '+':
-                return n1, n2, '+'
-            elif self.__operacao == '-':
-                return n1, n2, '-'
+                return randint(2, 15)
+        elif self.dificuldade == 3:
+            if self.operacao == '+' or self.operacao == '-':
+                return randint(1, 200)
             else:
-                n1 = randint(2, 20)
-                n2 = randint(2, 20)
-
-                return n1, n2, '*'
-        elif self.__dificuldade == 4:
-            n1 = randint(1, 1000)
-            n2 = randint(1, 1000)
-
-            if self.__operacao == '+':
-                return n1, n2, '+'
-            elif self.__operacao == '-':
-                return n1, n2, '-'
+                return randint(2, 20)
+        elif self.dificuldade == 4:
+            if self.operacao == '+' or self.operacao == '-':
+                return randint(1, 1000)
             else:
-                n1 = randint(3, 50)
-                n2 = randint(3, 50)
-
-                return n1, n2, '*'
+                return randint(3, 50)
         else:
-            print('Dificuldade Inválida!')
-            return 0, 0, '+'
+            return randint(3, 100_000)
 
-    def mostrar_operacao(self) -> None:
-        print(f'Operação: {self.__formula[0]} {self.__formula[2]} {self.__formula[1]}')
+    def __gerar_resultado(self) -> int:
+        if self.__operacao == '+':
+            return self.valor1 + self.valor2
+        elif self.__operacao == '-':
+            return self.valor1 - self.valor2
+        else:
+            return self.valor1 * self.valor2
 
     def checar_resultado(self, resultado: int) -> bool:
-        if self.__formula[2] == '+':
-            if (self.__formula[0] + self.__formula[1]) == resultado:
-                return True
-            else:
-                return False
-        elif self.__formula[2] == '-':
-            if (self.__formula[0] - self.__formula[1]) == resultado:
-                return True
-            else:
-                return False
+        print(f'{self.valor1} {self.operacao} {self.valor2} = {self.resultado}')
+        if self.__resultado == resultado:
+            print('Parabéns você acertou!')
+            return True
         else:
-            if (self.__formula[0] * self.__formula[1]) == resultado:
-                return True
-            else:
-                return False
+            print('Resposta Errada :(')
+            print('Na próxima você vai conseguir!')
+            return False
+
+    def mostrar_operacao(self) -> None:
+        print(f'Operação: {self.valor1} {self.operacao} {self.valor2} = ?')
 
     def __str__(self) -> str:
-        return f'Dificuldade: {self.__dificuldade} \nOperações Disponíveis: {self.__operacoes} ' \
-               f'\nOperação: {self.__operacao} \nOperação: {self.__formula}'
+        return f'Dificuldade: {self.dificuldade} \nOperações Disponíveis: {self.operacoes} ' \
+               f'\nOperação: {self.operacao} \nValor1: {self.valor1} \nValor2: {self.valor2}'
